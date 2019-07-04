@@ -1,4 +1,4 @@
-var difficulty = 4;        // number of zeros required at front of hash
+var difficulty = 3;        // number of zeros required at front of hash
 var maximumNonce = 500000; // limit the nonce to this so we don't mine too long
 
 // NOTE: Because there are 16 possible characters in a hex value, each time you increment
@@ -29,6 +29,8 @@ function updateState(block, chain) {
   else {
     $('#block'+block+'chain'+chain+'well').removeClass('well-success').addClass('well-error');
   }
+
+  
 }
 
 function updateHash(block, chain) {
@@ -59,6 +61,9 @@ function mine(block, chain, isChain) {
         updateState(block, chain);
       }
       break;
+      
+
+
     }
   }
 }

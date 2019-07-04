@@ -43,10 +43,21 @@
       label.col-sm-2.control-label(for='block#{block.block}chain#{block.chain}hash') #{__('Hash')}:
       .col-sm-10
         input.form-control(id='block#{block.block}chain#{block.chain}hash', type='text' disabled)
+      
 
     .form-group
-      .col-sm-2
-        i.icon-spinner.icon-spin.icon-large
+      label.col-sm-2.control-label #{__('Troco')}:
       .col-sm-10
-        button.btn.btn-primary.ladda-button(id='block#{block.block}chain#{block.chain}mineButton', data-style='expand-right')
-          span.ladda-label #{__('Mine')}
+        - each troco, x in block.troco
+          .input-group
+            .input-group-addon #{__('$')}
+            input.form-control(id='block#{block.block}chain#{block.chain}troco#{x}value', type='text', value='#{troco.troco}', onkeyup='updateChain(#{block.block}, #{block.chain});')
+            .input-group-addon #{__('From')}:
+           
+    .form-group
+          .col-sm-2
+            i.icon-spinner.icon-spin.icon-large
+          .col-sm-10
+            button.btn.btn-primary.ladda-button(id='block#{block.block}chain#{block.chain}mineButton', data-style='expand-right')
+              span.ladda-label #{__('Mine')}
+        
