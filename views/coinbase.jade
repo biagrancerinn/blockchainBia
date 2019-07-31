@@ -3,12 +3,12 @@ extends layout
 block content
   .container-fluid
     h1 #{__('Coinbase Transactions')}
-    - var peers = {1: 'Bia 1'}
+    - var peers = {1: '1'}
     - each peer, chain in peers
       h3 #{__('Peer')} #{peer}
       .row.row-horizon
         - var blocks = []
-        - blocks.push({block: 1, chain: chain, nonce: 16651, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000000000000000000000000000000000000000000000000000000000000000'})
+        - blocks.push({block: 1, chain: chain, nonce: 16651, coinbasevalue: '100', coinbaseto: '', txs: [], troco:[], previous: '0000000000000000000000000000000000000000000000000000000000000000'})
         - blocks.push({block: 2, chain: chain, nonce: 215458, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000438d7625b86a6f366545b1929975a0d3ff1f8847e56cc587cadddb0ab781'})
         - blocks.push({block: 3, chain: chain, nonce: 146, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000baeab68c2a60f9a6fa56355438d97c672a15494fcea617064d9314f9ff63'})
         - blocks.push({block: 4, chain: chain, nonce: 18292, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000df1d632b734f5a5fc126a0f0e8894fb4c8314ba7086b62980559af6771b9'})
@@ -54,12 +54,10 @@ block content
               
               var v,c = 0 
             
+              if (block != 1) {
+                var troco = prompt("Simular transação com troco ? Escreva ('sim' ou 'não')?");              
+              }
 
-              var troco = prompt("Deseja informar o troco (não/ valor inteiro)?");              
-              troco = parseFloat(troco);
-              
-
-              
 
               if (block == 1)
               {
@@ -72,15 +70,15 @@ block content
                  c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
                 console.log(c-v);
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
-                 
+                 console.log(troco, 'teste');
 
-                  if((troco > (c-v))) {
+                  if(troco === 'sim') {
                   console.log('maior');
-                  alert('troco maior que a transacao');
+                  alert('troco processado para o remetente da transação');
                   location.reload();
                 }else if (isNaN(troco)) {
                   console.log('menor');
-                  alert('O troco vai para a Ana');
+                  alert('O troco vai para o minerador Ana');
                 } else {
                   $('#block'+block+'chain'+chain+'troco0value').val(troco);
                 }
@@ -93,13 +91,13 @@ block content
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
                  
                 $('#block'+block+'chain'+chain+'coinbaseto').val('Carol');
-                if((troco > (c-v))) {
+                if(troco === 'sim') {
                   console.log('maior');
-                  alert('troco maior que a transacao');
+                  alert('troco processado para o remetente da transação');
                   location.reload();
                 }else if (isNaN(troco)) {
                   console.log('menor');
-                  alert('O troco vai para a Carol');
+                  alert('O troco vai para o minerador() Carol');
                 } else {
                   $('#block'+block+'chain'+chain+'troco0value').val(troco);
                 }
@@ -112,13 +110,13 @@ block content
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
                   
                 $('#block'+block+'chain'+chain+'coinbaseto').val('Bia');
-                if((troco > (c-v))) {
+                if(troco === 'sim') {
                   console.log('ingual');
-                  alert('troco maior que a transacao');
+                  alert('troco processado para o remetente da transação');
                   location.reload();
                 }else if (isNaN(troco)) {
                   console.log('menor');
-                  alert('O troco vai para a Bia');
+                  alert('O troco vai para o minerador Bia');
                 } else {
                   $('#block'+block+'chain'+chain+'troco0value').val(troco);
                 }
@@ -133,13 +131,13 @@ block content
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Fê');
                   
 
-                if((troco > (c-v))) {
+                if(troco === 'sim') {
                   console.log('maior');
-                  alert('troco maior que a transacao');
+                  alert('troco processado para o remetente da transação');
                   location.reload();
                 }else if (isNaN(troco)) {
                   console.log('menor');
-                  alert('O troco vai para a Fê');
+                  alert('O troco vai para o minerador');
                 } else {
                   $('#block'+block+'chain'+chain+'troco0value').val(troco);
                 }
