@@ -4,15 +4,16 @@ block content
   .container-fluid
     h1 #{__('Coinbase Transactions')}
     - var peers = {1: '1'}
+    - var tx = [{value: '0', from: '', to: ''}, {value: '0', from: '', to: ''}, {value: '0', from: '', to: ''}, {value: '0', from: '', to: ''}, {value: '0', from: '', to: ''}]
     - each peer, chain in peers
       h3 #{__('Peer')} #{peer}
       .row.row-horizon
         - var blocks = []
         - blocks.push({block: 1, chain: chain, nonce: 16651, coinbasevalue: '100', coinbaseto: '', txs: [], troco:[], previous: '0000000000000000000000000000000000000000000000000000000000000000'})
-        - blocks.push({block: 2, chain: chain, nonce: 215458, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000438d7625b86a6f366545b1929975a0d3ff1f8847e56cc587cadddb0ab781'})
-        - blocks.push({block: 3, chain: chain, nonce: 146, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000baeab68c2a60f9a6fa56355438d97c672a15494fcea617064d9314f9ff63'})
-        - blocks.push({block: 4, chain: chain, nonce: 18292, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000df1d632b734f5a5fc126a0f0e8894fb4c8314ba7086b62980559af6771b9'})
-        - blocks.push({block: 5, chain: chain, nonce: 108899, coinbasevalue: '100', coinbaseto: '', txs: [{value: '0', from: '', to: ''}], troco:[{troco: ''}], previous: '0000c694336f88129f3685bd3ba5d67c445dfd8d18bd22f5d87301dd560eb30e'})
+        - blocks.push({block: 2, chain: chain, nonce: 215458, coinbasevalue: '100', coinbaseto: '', txs: tx, troco:[{troco: ''}], previous: '0000438d7625b86a6f366545b1929975a0d3ff1f8847e56cc587cadddb0ab781'})
+        - blocks.push({block: 3, chain: chain, nonce: 146, coinbasevalue: '100', coinbaseto: '', txs: tx, troco:[{troco: ''}], previous: '0000baeab68c2a60f9a6fa56355438d97c672a15494fcea617064d9314f9ff63'})
+        - blocks.push({block: 4, chain: chain, nonce: 18292, coinbasevalue: '100', coinbaseto: '', txs: tx, troco:[{troco: ''}], previous: '0000df1d632b734f5a5fc126a0f0e8894fb4c8314ba7086b62980559af6771b9'})
+        - blocks.push({block: 5, chain: chain, nonce: 108899, coinbasevalue: '100', coinbaseto: '', txs: tx, troco:[{troco: ''}], previous: '0000c694336f88129f3685bd3ba5d67c445dfd8d18bd22f5d87301dd560eb30e'})
         each block in blocks
           .col-xs-7
             include includes/coinbaseblock.jade
@@ -26,6 +27,8 @@ block content
       setup(5, 1);
 
       });
+
+    
 
     function getText(block, chain) {
       var s = $('#block'+block+'chain'+chain+'number').val() +
@@ -42,6 +45,36 @@ block content
       return s;
     }
 
+    function updateBlockCoinbase(block, chain, value, from, to) {
+      var tx = 0;
+      var invalidTransaction = false;
+      var yourNumber = Math.random();
+      console.log(value, from, to);
+      var hexString = yourNumber.toString(16).replace('.', 'x');
+      $('#block'+block+'chain'+chain+'coinbaseto').val(hexString);     
+      var database = JSON.parse($('#database').val());
+      if(block != 1) {
+        for(var i = 0; i <= 5; i++) {
+          
+          if(database.hasOwnProperty(from[i]) ) {
+            console.log(from[i]);  
+            if(value > 0 && from != undefined && to!= undefined ) {
+              tx = tx + 2
+            }
+          } else {
+            invalidTransaction = true
+          }
+        }
+      }
+
+      database[hexString] = 100+tx;
+      $('#database').val(JSON.stringify(database));
+      console.log(JSON.stringify(database));
+
+
+      return invalidTransaction;
+    }
+
     function setup(block, chain) {
       updateHash(block, chain);
       $('#block'+block+'chain'+chain+'mineButton').click(function(e) {
@@ -53,97 +86,25 @@ block content
               if (block !== 1)
               
               var v,c = 0 
+              
+              var value = [];
+              var from = [];
+              var to = [];
+              for (var i = 0; i <= 5; i++) {  
+                value.push($('#block'+block+'chain'+chain+'tx'+i+'value').val());
+                from.push($('#block'+block+'chain'+chain+'tx'+i+'from').val());
+                to.push($('#block'+block+'chain'+chain+'tx'+i+'to').val());
+              }
+
+              updateBlockCoinbase(block, chain, value, from, to);
             
-              if (block != 1) {
-                var troco = prompt("Simular transação com troco ? Escreva ('sim' ou 'não')?");              
-              }
-
-
-              if (block == 1)
-              {
-                $('#block'+block+'chain'+chain+'coinbaseto').val('Paula');
-
-              }
-              if (block == 2)
-              {
-                 v = parseFloat($('#block'+block+'chain'+chain+'tx0value').val());
-                 c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
-                console.log(c-v);
-                  $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
-                 console.log(troco, 'teste');
-
-                  if(troco === 'sim') {
-                  console.log('maior');
-                  alert('troco processado para o remetente da transação');
-                  location.reload();
-                }else if (isNaN(troco)) {
-                  console.log('menor');
-                  alert('O troco vai para o minerador Ana');
-                } else {
-                  $('#block'+block+'chain'+chain+'troco0value').val(troco);
-                }
-              }
-              if (block == 3)
-              {
-                  v = parseFloat($('#block'+block+'chain'+chain+'tx0value').val());
-                 c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
-                console.log(c-v);
-                  $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
-                 
-                $('#block'+block+'chain'+chain+'coinbaseto').val('Carol');
-                if(troco === 'sim') {
-                  console.log('maior');
-                  alert('troco processado para o remetente da transação');
-                  location.reload();
-                }else if (isNaN(troco)) {
-                  console.log('menor');
-                  alert('O troco vai para o minerador() Carol');
-                } else {
-                  $('#block'+block+'chain'+chain+'troco0value').val(troco);
-                }
-              }              
-              if (block == 4)
-              {
-                  v = parseFloat($('#block'+block+'chain'+chain+'tx0value').val());
-                 c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
-                console.log(c-v);
-                  $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
-                  
-                $('#block'+block+'chain'+chain+'coinbaseto').val('Bia');
-                if(troco === 'sim') {
-                  console.log('ingual');
-                  alert('troco processado para o remetente da transação');
-                  location.reload();
-                }else if (isNaN(troco)) {
-                  console.log('menor');
-                  alert('O troco vai para o minerador Bia');
-                } else {
-                  $('#block'+block+'chain'+chain+'troco0value').val(troco);
-                }
-              }
-              if (block == 5)
-              {
-                
-                  v = parseFloat($('#block'+block+'chain'+chain+'tx0value').val());
-                 c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
-                console.log(c-v);
-                  $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
-                  $('#block'+block+'chain'+chain+'coinbaseto').val('Fê');
-                  
-
-                if(troco === 'sim') {
-                  console.log('maior');
-                  alert('troco processado para o remetente da transação');
-                  location.reload();
-                }else if (isNaN(troco)) {
-                  console.log('menor');
-                  alert('O troco vai para o minerador');
-                } else {
-                  $('#block'+block+'chain'+chain+'troco0value').val(troco);
-                }
-              }
-
-              l.stop();
+            if(value != 0  && block != 1) {
+              
+            } else {
+              
+          }
+          
+            l.stop();
             }, 250); // give UI time to update
         });
     }
