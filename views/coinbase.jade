@@ -66,17 +66,18 @@ block content
               }
               if (block == 2)
               {
+                  debugger;
                  v = parseFloat($('#block'+block+'chain'+chain+'tx0value').val());
                  c = parseFloat($('#block'+block+'chain'+chain+'coinbasevalue').val());
                 console.log(c-v);
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
                  console.log(troco, 'teste');
 
-                  if(troco === 'sim') {
+                if(troco === 'sim') {
                   console.log('maior');
                   alert('troco processado para o remetente da transação');
-                  location.reload();
-                }else if (isNaN(troco)) {
+                  
+                } else if (isNaN(troco)) {
                   console.log('menor');
                   alert('O troco vai para o minerador Ana');
                 } else {
@@ -94,7 +95,7 @@ block content
                 if(troco === 'sim') {
                   console.log('maior');
                   alert('troco processado para o remetente da transação');
-                  location.reload();
+                  
                 }else if (isNaN(troco)) {
                   console.log('menor');
                   alert('O troco vai para o minerador() Carol');
@@ -113,7 +114,7 @@ block content
                 if(troco === 'sim') {
                   console.log('ingual');
                   alert('troco processado para o remetente da transação');
-                  location.reload();
+                  
                 }else if (isNaN(troco)) {
                   console.log('menor');
                   alert('O troco vai para o minerador Bia');
@@ -130,11 +131,11 @@ block content
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Ana');
                   $('#block'+block+'chain'+chain+'coinbaseto').val('Fê');
                   
-
+                debugger;
                 if(troco === 'sim') {
                   console.log('maior');
                   alert('troco processado para o remetente da transação');
-                  location.reload();
+                  
                 }else if (isNaN(troco)) {
                   console.log('menor');
                   alert('O troco vai para o minerador');
